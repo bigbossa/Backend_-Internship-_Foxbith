@@ -30,14 +30,43 @@ app.post("/create", async (req: Request, res: Response) => {
   }
 });
 
-// Get all
+// Get all orders with List / Filter / Pagination
 app.get("/allorders", async (req: Request, res: Response) => {
+  const { page = 1, limit = 10, status, search } = req.query;
+
+  const pageNumber = parseInt(page as string, 10);
+  const limitNumber = parseInt(limit as string, 10);
+  const skip = (pageNumber - 1) * limitNumber;
+  const where: any = {};
+
+  if (status) {
+    where.Status = status;
+  }
+  if (search) {
+    where.OR = [
+      { Name: { contains: search as string, mode: "insensitive" } },
+      { Item: { contains: search as string, mode: "insensitive" } },
+    ];
+  }
   try {
-    const orders = await prisma.orderCRUD.findMany();
-    res.status(200).json(orders);
+    const orders = await prisma.orderCRUD.findMany({
+      where,
+      skip,
+      take: limitNumber,
+      orderBy: { Date: "desc" }, 
+    });
+    const totalOrders = await prisma.orderCRUD.count({ where });
+    const totalPages = Math.ceil(totalOrders / limitNumber);
+
+    res.status(200).json({
+      page: pageNumber,
+      totalPages,
+      totalOrders,
+      orders,
+    });
   } catch (error: any) {
     console.error("Prisma Error:", error);
-    res.status(500).json({ error: "ข้อมูลไม่มาฮ่ะ" });
+    res.status(500).json({ error: error.message || "ข้อมูลไม่มาฮ่ะ" });
   }
 });
 
