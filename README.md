@@ -17,26 +17,6 @@ The system allows performing **CRUD operations** (Create, Read, Update, Delete) 
 - **dotenv** — For environment variable management  
 
 ---
-
-## 📁 Project Structure
-Backend_-Internship-_Foxbith/
-├── prisma/
-│ └── schema.prisma # Prisma schema for MongoDB models
-├── src/
-│ ├── controller/
-│ │ └── orderController.ts # Logic for handling order CRUD
-│ ├── routes/
-│ │ └── orderRoutes.ts # Express routing definitions
-│ ├── prisma.ts # Prisma client configuration
-│ ├── index.ts # Main entry point
-│ └── utils/ # (optional) Helper or middleware files
-├── .env # Environment variables
-├── package.json # Dependencies and scripts
-├── tsconfig.json # TypeScript configuration
-└── README.md
-
----
-
 ## 🚀 Setup & Run
 ### 1️⃣ Clone Repository
 ```bash
