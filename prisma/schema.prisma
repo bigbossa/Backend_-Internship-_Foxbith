@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL") // URI ใน .env
+}
+model OrderCRUD {
+  Id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  OrderNumber String      @unique
+  Name        String
+  Item        String
+  Quantity    Int
+  Price       Int
+  Subtotal    Float
+  Status      OrderStatus @default(Pending)
+  Date        DateTime    @default(now())
+}
+enum OrderStatus {
+  Pending
+  Completed
+  Cancelled
+}
